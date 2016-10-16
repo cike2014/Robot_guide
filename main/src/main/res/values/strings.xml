@@ -1,0 +1,30 @@
+<resources>
+    <string name="app_name">Main</string>
+
+    <string name="copy_right">技术支持：经纶世纪医疗网络技术（北京）有限公司</string>
+
+    <string name="choose_image">上传头像</string>
+    <string name="hint_name">请填写真实姓名</string>
+    <string name="label_name">姓&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;名：</string>
+    <string name="label_sex">性&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;别：</string>
+    <string name="sex_nv">女</string>
+    <string name="sex_nan">男</string>
+    <string name="label_phone">手机号码：</string>
+    <string name="label_birth">出生日期：</string>
+    <string name="date_year">年</string>
+    <string name="date_month">月</string>
+    <string name="date_day">日</string>
+    <string name="button_register">注册</string>
+    <string name="zhangsan">张三</string>
+    <string name="_23">23</string>
+    <string name="label_disease">已患疾病：</string>
+    <string name="t1">糖尿病</string>
+    <string name="label_risk">疾病风险：</string>
+    <string name="t2">高血压、冠心病</string>
+    <string name="label_service">陪伴服务</string>
+    <string name="label_register">注册</string>
+
+    <string name="not_exist_app">该应用还没有安装</string>
+    <string name="not_login">你还没有登录</string>
+    <string name="no_recognition">对不起，无法识别</string>
+</resources>

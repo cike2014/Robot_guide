@@ -1,0 +1,7 @@
+<resources>
+    <string name="app_name">Robot_guide</string>
+    <string name="tip_msg">根据您的回答为您匹配了三个科室</string>
+    <string name="accept_video">您是否要接听视频咨询？</string>
+    <string name="tip_daozhen">欢迎使用智能导诊服务，请问您有哪里不舒服吗？</string>
+
+</resources>
