@@ -18,13 +18,14 @@ import java.io.IOException;
 
 public class U05RobotManger {
 
+	private static final String TAG = U05RobotManger.class.getSimpleName();
 	private static U05RobotManger one = new U05RobotManger();
 
 	private BroadcastReceiver wkReceiver;
 	private BroadcastReceiver mRecongnizeResultReceiver;
 	private BroadcastReceiver mVoiceResultEventReceiver;
 	private BroadcastReceiver mBackToWakeUpReceiver;
-	private final static String PHOTO_PATH = Environment.getExternalStorageDirectory() + "/msc/";
+	private final static String PHOTO_PATH = Environment.getExternalStorageDirectory().getAbsolutePath() + "/msc/";
 	private BroadcastReceiver mVoiceControlReceiver;
 
 	private U05RobotManger() {
@@ -102,6 +103,11 @@ public class U05RobotManger {
 	 */
 	public static void registerFaceRecongnize(Bitmap img, String name, String id) {
 		if (img != null) {
+			Log.d(TAG,"PHOTO_PATH:"+PHOTO_PATH);
+			File dir = new File(PHOTO_PATH);
+			if (!dir.exists()){
+				dir.mkdirs();
+			}
 			File file = new File(PHOTO_PATH + "fr.jpg");// 将bitmap存成图片文件
 			if(!file.exists()){
 				try {

@@ -95,6 +95,7 @@ public class U05RobotService extends Service {
                 case MESSAGE_CODE_PLAY_TTS: {
                     Bundle b2 = (Bundle) msg.obj;
                     String text = b2.getString("text");
+                    Log.d("ccc","text:"+text);
                     MsgSendUtils.sendStringMsg(MsgType.SEND_MSGTYPE_PLAY_TTS,
                             text);
                     break;

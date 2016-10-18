@@ -148,7 +148,7 @@ public class RegisterActivity extends AppCompatActivity {
         if (ivHeadBitmap != null){
             mIvHead.setImageBitmap(ivHeadBitmap);
             U05RobotManger.registerFaceRecongnize(ivHeadBitmap,"andy","12341234");
-//            saveBitmapToSD(ivHeadBitmap,"12341234.png");
+            saveBitmapToSD(ivHeadBitmap,"12341234.png");
         }
 
     }

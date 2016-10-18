@@ -1,5 +1,7 @@
 package com.mmednet.main.socket;
 
+import com.mmednet.main.util.Constant;
+
 /**
  * IP 相关的常量
  * 
@@ -28,7 +30,7 @@ public class IpMsgConst {
 	/**
 	 * 和人脸识别app通讯的IP和端口
 	 */
-	public static final String FACE_SOCKET_HOST = "192.168.1.153";
+	public static final String FACE_SOCKET_HOST =Constant.SOCKET_HOST;
     public static final int FACE_SOCKET_PORT = 19258;
     
     /**

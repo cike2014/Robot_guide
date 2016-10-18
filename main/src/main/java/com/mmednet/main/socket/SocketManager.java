@@ -6,6 +6,7 @@ import android.os.Handler;
 import android.support.v4.content.LocalBroadcastManager;
 
 import com.alibaba.fastjson.JSON;
+import com.mmednet.main.util.Constant;
 
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
@@ -83,15 +84,14 @@ public class SocketManager {
     // public static final String SOCKET_HOST = "192.168.22.188";//
     // "192.168.11.90";//"192.168.12.1";
 
-    public static  String SOCKET_HOST = "172.30.99.6";
-    public static final int SOCKET_PORT = 19255;
+
 
     private void connectToServer() {
         Thread aa = new Thread(new Runnable() {
             public void run() {
                 try {
-                    mSocket.connect(new InetSocketAddress(SOCKET_HOST,
-                            SOCKET_PORT));
+                    mSocket.connect(new InetSocketAddress(Constant.SOCKET_HOST,
+                            Constant.SOCKET_PORT));
                     mReadThread = new SocketReadThread();
                     mReadThread.start();
                 } catch (UnknownHostException e) {

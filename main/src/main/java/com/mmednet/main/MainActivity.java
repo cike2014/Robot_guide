@@ -50,7 +50,7 @@ public class MainActivity extends AppCompatActivity implements U05RobotManger.Wa
     @Bind(R.id.ll_tizhong)
     LinearLayout mLlTiZhong;
     @Bind(R.id.ll_tiwen)
-    LinearLayout mLlTiWen;
+    LinearLayout mLlWen;
     @Bind(R.id.ll_xuetang)
     LinearLayout mLlXueTang;
     @Bind(R.id.iv_tizhong)
@@ -92,7 +92,7 @@ public class MainActivity extends AppCompatActivity implements U05RobotManger.Wa
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         ButterKnife.bind(this);
-       SocketManager.getInstance().init(this);
+        SocketManager.getInstance().init(this);
 //        U05RobotManger.getInstance().registerVoiceResultReceiver(getApplicationContext(), this);
 //        U05RobotManger.getInstance().registerWakeUpReceiver(getApplicationContext(), this);
 //        U05RobotManger.getInstance().registerBackToWakeUpReceiver(getApplicationContext(), this);
@@ -129,10 +129,10 @@ public class MainActivity extends AppCompatActivity implements U05RobotManger.Wa
         }
     }
 
-    @OnClick({R.id.iv_daozhen, R.id.iv_pinggu,R.id.iv_xueya,R.id.iv_tizhong,R.id.iv_tiwen,R.id.iv_xuetang})
+    @OnClick({R.id.iv_daozhen, R.id.iv_pinggu, R.id.iv_xueya, R.id.iv_tizhong, R.id.iv_tiwen, R.id.iv_xuetang})
     void imageClick(View view) {
 
-        if (true /*&& CommonUtil.getLoginSte(this)*/) {
+        if (CommonUtil.getLoginSte(this)) {
             PackageUtil.MyPackage myPackage=PackageUtil.getPackage(view.getId());
             if (myPackage != null && CommonUtil.existPackage(this, myPackage.getPackageName())) {
                 Bundle args=null;
@@ -147,7 +147,7 @@ public class MainActivity extends AppCompatActivity implements U05RobotManger.Wa
                         break;
                 }
                 Log.d(TAG, "myPackageInfo:" + myPackage);
-                CommonUtil.redirect(myPackage.getPackageName(),myPackage.getActivityName(), myPackage.getArgs(), this);
+                CommonUtil.redirect(myPackage.getPackageName(), myPackage.getActivityName(), myPackage.getArgs(), this);
             } else {
                 ToastUtil.showMsg(this, R.string.not_exist_app);
             }
@@ -161,8 +161,11 @@ public class MainActivity extends AppCompatActivity implements U05RobotManger.Wa
     void btnRegisterClick(View view) {
         startActivity(new Intent(this, RegisterActivity.class));
 //        SocketManager.getInstance().init(this);
-//        MsgSendUtils.sendStringMsg(MsgType.SEND_MSGTYPE_PLAY_SOUND, "/ai/Ai05res/a1/res/audio/communicate/077.mp3");
-//        MsgSendUtils.sendStringMsg(MsgType.SEND_MSGTYPE_PLAY_TTS, "你好");
+//        MsgSendUtils.sendStringMsg(MsgType.SEND_MSGTYPE_PLAY_SOUND, "/ai/Ai05res/a1/res/audio/communicate/077.mp3")
+// ;
+//        String m="您的收缩压为" + 150 + "," + "您的舒张压为" + 90;
+//
+//        MsgSendUtils.sendStringMsg(MsgType.SEND_MSGTYPE_PLAY_TTS, m);
 //
 //        //跨应用发送一个广播
 ////        Intent intent=new Intent("com.mmednet.interprocess");

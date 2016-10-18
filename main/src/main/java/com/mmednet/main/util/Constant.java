@@ -12,4 +12,8 @@ public class Constant {
 
     public final static String ALBUM_PATH
             =Environment.getExternalStorageDirectory() + "/mmednet_robot/";
+
+
+    public static final  String SOCKET_HOST = "192.168.12.1";
+    public static final int SOCKET_PORT = 19255;
 }
