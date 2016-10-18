@@ -104,7 +104,7 @@
                     android:layout_height="wrap_content"
                     android:background="@mipmap/result_left_bottom"
                     android:gravity="left|center_vertical"
-                    android:text="韩梅梅"
+                    android:text="韩医生"
                     android:textColor="@android:color/white"
                     android:textSize="25sp"
                     android:layout_alignParentBottom="true"
@@ -187,7 +187,7 @@
                     android:layout_alignParentLeft="true"
                     android:background="@mipmap/result_left_bottom"
                     android:gravity="left|center_vertical"
-                    android:text="韩梅梅"
+                    android:text="刘医生"
                     android:textColor="@android:color/white"
                     android:textSize="25sp"
                     />
@@ -271,7 +271,7 @@
                     android:background="@mipmap/result_left_bottom"
                     android:gravity="left|center_vertical"
                     android:padding="10dp"
-                    android:text="韩梅梅"
+                    android:text="林医生"
                     android:textColor="@android:color/white"
                     android:textSize="25sp"
                     />
