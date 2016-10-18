@@ -93,9 +93,9 @@ public class MainActivity extends AppCompatActivity implements U05RobotManger.Wa
         setContentView(R.layout.activity_main);
         ButterKnife.bind(this);
         SocketManager.getInstance().init(this);
-//        U05RobotManger.getInstance().registerVoiceResultReceiver(getApplicationContext(), this);
-//        U05RobotManger.getInstance().registerWakeUpReceiver(getApplicationContext(), this);
-//        U05RobotManger.getInstance().registerBackToWakeUpReceiver(getApplicationContext(), this);
+        U05RobotManger.getInstance().registerVoiceResultReceiver(getApplicationContext(), this);
+        U05RobotManger.getInstance().registerWakeUpReceiver(getApplicationContext(), this);
+        U05RobotManger.getInstance().registerBackToWakeUpReceiver(getApplicationContext(), this);
         startService(new Intent(this, U05RobotService.class));
     }
 
@@ -129,7 +129,7 @@ public class MainActivity extends AppCompatActivity implements U05RobotManger.Wa
         }
     }
 
-    @OnClick({R.id.iv_daozhen, R.id.iv_pinggu, R.id.iv_xueya, R.id.iv_tizhong, R.id.iv_tiwen, R.id.iv_xuetang})
+    @OnClick({R.id.iv_daozhen, R.id.iv_pinggu, R.id.iv_xueya, R.id.iv_tizhong, R.id.iv_tiwen, R.id.iv_xuetang,R.id.iv_shipin})
     void imageClick(View view) {
 
         if (CommonUtil.getLoginSte(this)) {
@@ -224,8 +224,8 @@ public class MainActivity extends AppCompatActivity implements U05RobotManger.Wa
     @Override
     protected void onDestroy() {
         super.onDestroy();
-//        U05RobotManger.getInstance().unRegisterBackToWakeUpReceiver(this);
-//        U05RobotManger.getInstance().unRegisterVoiceRecognitionResulReceiver(this);
-//        U05RobotManger.getInstance().unRegisterWakeUpReceiver(this);
+        U05RobotManger.getInstance().unRegisterBackToWakeUpReceiver(this);
+        U05RobotManger.getInstance().unRegisterVoiceRecognitionResulReceiver(this);
+        U05RobotManger.getInstance().unRegisterWakeUpReceiver(this);
     }
 }
