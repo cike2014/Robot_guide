@@ -7,7 +7,6 @@ import android.content.IntentFilter;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.v7.app.AppCompatActivity;
-import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
 import android.view.Window;
@@ -89,12 +88,12 @@ public class MainActivity extends AppCompatActivity implements RobotService.ISer
 
     @OnClick(R.id.btn_submit)
     void clickBtnSubmit(View view) {
-        RobotService.getInstance().bindService(this);
-        RobotService.getInstance().setServiceConnectionlistener(this);
+//        RobotService.getInstance().bindService(this);
+//        RobotService.getInstance().setServiceConnectionlistener(this);
 
 
 
-//        submitData();
+        submitData();
     }
 
     //肯定回答
@@ -111,7 +110,7 @@ public class MainActivity extends AppCompatActivity implements RobotService.ISer
     }
 
     private void submitData() {
-        if (TextUtils.isEmpty(sids)) {
+        if (NO==0) {
             ToastUtil.showMsg(this, "请选择");
             return;
         }
@@ -170,7 +169,7 @@ public class MainActivity extends AppCompatActivity implements RobotService.ISer
     @Override
     public void onServiceConnected() {
         Log.d(TAG,"链接成功回调");
-        RobotService.getInstance().play("/ai/Ai05res/a1/res/audio/communicate/077.mp3",-1,-1);
+//        RobotService.getInstance().play("/ai/Ai05res/a1/res/audio/communicate/077.mp3",-1,-1);
     }
 
     @Override

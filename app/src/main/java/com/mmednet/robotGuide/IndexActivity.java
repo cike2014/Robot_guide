@@ -5,7 +5,9 @@ import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.ImageView;
+import android.widget.TextView;
 
+import com.mmednet.robotGuide.util.CommonUtils;
 import com.mmednet.robotGuide.util.Constant;
 
 import butterknife.Bind;
@@ -14,6 +16,8 @@ import butterknife.OnClick;
 
 public class IndexActivity extends AppCompatActivity {
 
+    @Bind(R.id.tv_message)
+    TextView mTvMessage;
     @Bind(R.id.iv_quanshen)
     ImageView mIvQuanshen;
     @Bind(R.id.iv_toujing)
@@ -31,6 +35,7 @@ public class IndexActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(com.mmednet.robotGuide.R.layout.activity_index);
         ButterKnife.bind(this);
+        CommonUtils.playTTS(this,mTvMessage.getText().toString().trim());
     }
 
     @OnClick({com.mmednet.robotGuide.R.id.iv_quanshen, com.mmednet.robotGuide.R.id.iv_toujing, com.mmednet.robotGuide.R.id.iv_xiongbu, com.mmednet.robotGuide.R.id.iv_fubu, com.mmednet.robotGuide.R.id.iv_sizhi})

@@ -8,9 +8,13 @@ import android.util.Log;
 import android.view.View;
 import android.view.Window;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.mmednet.robotGuide.bean.IntelligentGuideDepartment;
+import com.mmednet.robotGuide.util.CommonUtils;
+import com.mmednet.robotGuide.util.ToastUtil;
 import com.unisrobot.u05.interfaces.BackToWakeUpReceiver;
 import com.unisrobot.u05.interfaces.VoiceRecognitionResultReceiver;
 import com.unisrobot.u05.interfaces.WakeUpReceiver;
@@ -22,11 +26,13 @@ import java.util.Random;
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
-import com.mmednet.robotGuide.bean.IntelligentGuideDepartment;
-import com.mmednet.robotGuide.util.ToastUtil;
 
 public class ResultActivity extends AppCompatActivity implements WakeUpReceiver, BackToWakeUpReceiver, VoiceRecognitionResultReceiver {
 
+    @Bind(R.id.ll1)
+    LinearLayout mLl1;
+    @Bind(R.id.ll2)
+    LinearLayout mLl2;
     @Bind(R.id.result_iv_1)
     ImageView mResultIv1;
     @Bind(R.id.result_department_1)
@@ -73,20 +79,27 @@ public class ResultActivity extends AppCompatActivity implements WakeUpReceiver,
 
         ArrayList<IntelligentGuideDepartment> departments=(ArrayList<IntelligentGuideDepartment>) getIntent().getSerializableExtra("departments");
 
-        Log.d(TAG, "departments:" + departments.get(0));
-        IntelligentGuideDepartment department1=departments.get(0);
-        IntelligentGuideDepartment department2=departments.get(1);
-        IntelligentGuideDepartment department3=departments.get(2);
+        if(departments!=null && departments.size()==3){
+            Log.d(TAG, "departments:" + departments.get(0));
+            IntelligentGuideDepartment department1=departments.get(0);
+            IntelligentGuideDepartment department2=departments.get(1);
+            IntelligentGuideDepartment department3=departments.get(2);
 
-        mResultDepartment1.setText(department1.name);
-        mResultIv1.setImageResource(IntelligentGuideDepartment.getDrawable(department1.id));
-        mTvPercent1.setText(getPercent(70) + "");
-        mResultDepartment2.setText(department2.name);
-        mResultIv2.setImageResource(IntelligentGuideDepartment.getDrawable(department2.id));
-        mTvPercent2.setText(getPercent(50) + "");
-        mResultDepartment3.setText(department2.name);
-        mResultIv3.setImageResource(IntelligentGuideDepartment.getDrawable(department3.id));
-        mTvPercent3.setText(getPercent(40) + "");
+            mResultDepartment1.setText(department1.name);
+            mResultIv1.setImageResource(IntelligentGuideDepartment.getDrawable(department1.id));
+            mTvPercent1.setText(getPercent(70) + "");
+            mResultDepartment2.setText(department2.name);
+            mResultIv2.setImageResource(IntelligentGuideDepartment.getDrawable(department2.id));
+            mTvPercent2.setText(getPercent(50) + "");
+            mResultDepartment3.setText(department2.name);
+            mResultIv3.setImageResource(IntelligentGuideDepartment.getDrawable(department3.id));
+            mTvPercent3.setText(getPercent(40) + "");
+        }else{
+            mLl1.setVisibility(View.GONE);
+            mLl2.setVisibility(View.GONE);
+            CommonUtils.playTTS(this,"您回答的问题太少，无法计算您所需的科室。");
+        }
+
     }
 
     private double getPercent(double baseline) {
