@@ -4,6 +4,7 @@
 package com.mmednet.robotGuide.bean;
 
 import android.text.TextUtils;
+import android.util.Log;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -18,6 +19,8 @@ import java.util.UUID;
  * 
  */
 public class IntelligenceGuideSymptom {
+
+	private static final String TAG = IntelligenceGuideSymptom.class.getSimpleName();
 	
 	/** 身体症状关键字 **/
 	private static final String BODY_WORDS = "全身、浑身、皮肤、淋巴、没劲、疼、痛、烧、体温、汗、冷、吃、梦、睡、胃口、晕、迷糊、昏倒、虚、醒、食欲、饿、厌食、饱、抽、痒、黄";
@@ -102,6 +105,8 @@ public class IntelligenceGuideSymptom {
 		} else {
 			this.sort = sort;
 		}
+
+		Log.d(TAG,"sort:"+this.sort);
 	}
 	
 	public List<Integer> getSortList() {

@@ -41,7 +41,7 @@ public class MainActivity extends AppCompatActivity implements RobotService.ISer
     private static int NO=0;
     private Question curQuestion;
     private String sids="";
-    private String finish="终止;结束;好了;退出;完成";
+    private String finish="终止;结束;好了;退出;完成;提交";
 
     private static final String TAG=MainActivity.class.getSimpleName();
 
@@ -72,7 +72,7 @@ public class MainActivity extends AppCompatActivity implements RobotService.ISer
             return;
         }
         mTvTitle.setText(q.title);
-        CommonUtils.playTTS(this,q.title);
+        CommonUtils.playTTS(this, q.title.substring(0, q.title.length() - 1) + "&&1");
         this.curQuestion=q;
     }
 
@@ -92,7 +92,6 @@ public class MainActivity extends AppCompatActivity implements RobotService.ISer
 //        RobotService.getInstance().setServiceConnectionlistener(this);
 
 
-
         submitData();
     }
 
@@ -110,7 +109,7 @@ public class MainActivity extends AppCompatActivity implements RobotService.ISer
     }
 
     private void submitData() {
-        if (NO==0) {
+        if (NO == 0) {
             ToastUtil.showMsg(this, "请选择");
             return;
         }
@@ -148,10 +147,9 @@ public class MainActivity extends AppCompatActivity implements RobotService.ISer
                 submitData();
                 return;
             }
-            CommonUtils.playTTS(context,"对不起，听不懂您在说什么");
+            CommonUtils.playTTS(context, "对不起，听不懂您在说什么");
         }
     };
-
 
 
     @Override
@@ -168,12 +166,11 @@ public class MainActivity extends AppCompatActivity implements RobotService.ISer
 
     @Override
     public void onServiceConnected() {
-        Log.d(TAG,"链接成功回调");
-//        RobotService.getInstance().play("/ai/Ai05res/a1/res/audio/communicate/077.mp3",-1,-1);
+        Log.d(TAG, "链接成功回调");
     }
 
     @Override
     public void onServiceDisconnected() {
-        Log.d(TAG,"链接断开回调");
+        Log.d(TAG, "链接断开回调");
     }
 }

@@ -22,24 +22,37 @@ public class VoiceReceiver extends BroadcastReceiver {
 
     private static final String TAG=VoiceReceiver.class.getSimpleName();
 
+    private final static String res="是,是的,否,有点,没有,有,有一点,结束,完成,提交";
+
     @Override
     public void onReceive(Context context, Intent intent) {
-        Log.d(TAG,"Main发给other广播："+intent);
+
+        Log.d(TAG, "VoiceReceiver:" + RobotApplication.getInstance().getTop() + ";result=" + intent.getExtras().get("result"));
+
         if (!CommonUtils.isBackground(context)) {
-            String result =(String) intent.getExtras().get("result");
-            if(RobotApplication.getInstance().getTop()== Constant.TOP_INDEX){
-                String keyWord = DicUtil.getKeyWord(result);
-                if(!TextUtils.isEmpty(keyWord)){
-                    Intent myIntent = new Intent(context, MainActivity.class);
+            String result=(String) intent.getExtras().get("result");
+            if (RobotApplication.getInstance().getTop() == Constant.TOP_INDEX) {
+                String keyWord=DicUtil.getKeyWord(result);
+                if (!TextUtils.isEmpty(keyWord)) {
+                    Intent myIntent=new Intent(context, MainActivity.class);
                     myIntent.putExtra("keyWord", keyWord);
                     myIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                     context.startActivity(myIntent);
+                } else {
+                    //没有匹配，重新识别
+                    CommonUtils.beginRecognize(context);
                 }
-            }else{
-                Intent i = new Intent(Constant.SEND_TO_ACTIVITY);
-                i.putExtra("result",result);
-                context.sendBroadcast(i);
+            } else {
+                if (res.indexOf(result) > -1) {
+                    Intent i=new Intent(Constant.SEND_TO_ACTIVITY);
+                    i.putExtra("result", result);
+                    context.sendBroadcast(i);
+                } else {
+                    //没有匹配，重新识别
+                    CommonUtils.beginRecognize(context);
+                }
             }
+
         }
     }
 }

@@ -1,7 +1,8 @@
 package com.mmednet.robotGuide;
 
 import android.app.Dialog;
-import android.content.Context;
+import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
@@ -14,20 +15,15 @@ import android.widget.TextView;
 
 import com.mmednet.robotGuide.bean.IntelligentGuideDepartment;
 import com.mmednet.robotGuide.util.CommonUtils;
-import com.mmednet.robotGuide.util.ToastUtil;
-import com.unisrobot.u05.interfaces.BackToWakeUpReceiver;
-import com.unisrobot.u05.interfaces.VoiceRecognitionResultReceiver;
-import com.unisrobot.u05.interfaces.WakeUpReceiver;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Random;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
-public class ResultActivity extends AppCompatActivity implements WakeUpReceiver, BackToWakeUpReceiver, VoiceRecognitionResultReceiver {
+public class ResultActivity extends AppCompatActivity  {
 
     @Bind(R.id.ll1)
     LinearLayout mLl1;
@@ -80,7 +76,7 @@ public class ResultActivity extends AppCompatActivity implements WakeUpReceiver,
         ArrayList<IntelligentGuideDepartment> departments=(ArrayList<IntelligentGuideDepartment>) getIntent().getSerializableExtra("departments");
 
         if(departments!=null && departments.size()==3){
-            Log.d(TAG, "departments:" + departments.get(0));
+            Log.d(TAG, "departments:" + departments);
             IntelligentGuideDepartment department1=departments.get(0);
             IntelligentGuideDepartment department2=departments.get(1);
             IntelligentGuideDepartment department3=departments.get(2);
@@ -88,10 +84,12 @@ public class ResultActivity extends AppCompatActivity implements WakeUpReceiver,
             mResultDepartment1.setText(department1.name);
             mResultIv1.setImageResource(IntelligentGuideDepartment.getDrawable(department1.id));
             mTvPercent1.setText(getPercent(70) + "");
+
             mResultDepartment2.setText(department2.name);
             mResultIv2.setImageResource(IntelligentGuideDepartment.getDrawable(department2.id));
             mTvPercent2.setText(getPercent(50) + "");
-            mResultDepartment3.setText(department2.name);
+
+            mResultDepartment3.setText(department3.name);
             mResultIv3.setImageResource(IntelligentGuideDepartment.getDrawable(department3.id));
             mTvPercent3.setText(getPercent(40) + "");
         }else{
@@ -126,14 +124,16 @@ public class ResultActivity extends AppCompatActivity implements WakeUpReceiver,
         dialog.findViewById(R.id.dialog_yes).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                ToastUtil.showMsg(ResultActivity.this, "开启视频咨询");
+                PackageManager packageManager=ResultActivity.this.getPackageManager();
+                Intent intent=packageManager.getLaunchIntentForPackage("com.chinatel.robotclient");
+                intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_RESET_TASK_IF_NEEDED | Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                ResultActivity.this.startActivity(intent);
             }
         });
         dialog.findViewById(R.id.dialog_no).setOnClickListener(new View.OnClickListener() {
 
             @Override
             public void onClick(View v) {
-                ToastUtil.showMsg(ResultActivity.this, "不开启视频咨询");
                 dialog.dismiss();
             }
         });
@@ -141,25 +141,4 @@ public class ResultActivity extends AppCompatActivity implements WakeUpReceiver,
         dialog.show();
     }
 
-    @Override
-    public void onHandleEvent(Context context) {
-
-    }
-
-    @Override
-    public void onHandleVoiceResulEvent(Context context, String s) {
-
-        if(Arrays.asList(positive.split(";")).contains(s)){
-            ToastUtil.showMsg(ResultActivity.this, "开启视频咨询");
-        }
-        if(Arrays.asList(negative.split(";")).contains(s)){
-            ToastUtil.showMsg(ResultActivity.this, "不开启视频咨询");
-        }
-
-    }
-
-    @Override
-    public void onHandleWakeUpEvent() {
-
-    }
 }

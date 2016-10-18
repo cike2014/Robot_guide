@@ -30,12 +30,13 @@ public class IndexActivity extends AppCompatActivity {
     ImageView mIvSiZhi;
 
 
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(com.mmednet.robotGuide.R.layout.activity_index);
         ButterKnife.bind(this);
-        CommonUtils.playTTS(this,mTvMessage.getText().toString().trim());
+        CommonUtils.playTTS(this,mTvMessage.getText().toString().trim()+"&&1");
     }
 
     @OnClick({com.mmednet.robotGuide.R.id.iv_quanshen, com.mmednet.robotGuide.R.id.iv_toujing, com.mmednet.robotGuide.R.id.iv_xiongbu, com.mmednet.robotGuide.R.id.iv_fubu, com.mmednet.robotGuide.R.id.iv_sizhi})

@@ -42,7 +42,12 @@ public class CommonUtils {
         Bundle bundle=new Bundle();
         bundle.putString("word", word);
         intent.putExtras(bundle);
-//        LocalBroadcastManager.getInstance(context).sendBroadcast(intent);
         context.sendBroadcast(intent);
     }
+
+    public static void beginRecognize(Context context){
+        Intent intent = new Intent("recognize");
+        context.sendBroadcast(intent);
+    }
+
 }

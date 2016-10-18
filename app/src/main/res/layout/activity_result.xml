@@ -64,7 +64,7 @@
                         android:layout_height="match_parent"
                         android:layout_marginLeft="30dp"
                         android:gravity="center_vertical"
-                        android:text="皮肤科"
+                        android:text=""
                         android:textColor="@android:color/white"
                         android:textSize="20sp"/>
                 </LinearLayout>
@@ -145,7 +145,7 @@
                         android:layout_height="match_parent"
                         android:layout_marginLeft="30dp"
                         android:gravity="center_vertical"
-                        android:text="皮肤科"
+                        android:text=""
                         android:textColor="@android:color/white"
                         android:textSize="20sp"/>
                 </LinearLayout>
@@ -228,7 +228,7 @@
                         android:layout_height="match_parent"
                         android:layout_marginLeft="30dp"
                         android:gravity="center_vertical"
-                        android:text="皮肤科"
+                        android:text=""
                         android:textColor="@android:color/white"
                         android:textSize="20sp"/>
                 </LinearLayout>

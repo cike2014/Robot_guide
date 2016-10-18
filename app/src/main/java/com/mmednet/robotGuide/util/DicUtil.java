@@ -25,7 +25,8 @@ public class DicUtil {
         catMap.put("头", 1002);
         catMap.put("脑袋", 1002);
         catMap.put("头部", 1002);
-        catMap.put("脖子", 1002);
+        catMap.put("头疼",1002);
+        catMap.put("头痛",1002);
         catMap.put("脖子", 1002);
         catMap.put("肚子", 1004);
         catMap.put("腹部", 1004);
