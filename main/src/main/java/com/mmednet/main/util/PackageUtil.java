@@ -18,6 +18,7 @@ public class PackageUtil {
         packageMap=new HashMap<Integer, MyPackage>();
         packageMap.put(R.id.iv_daozhen, new MyPackage(R.id.iv_daozhen, "com.mmednet.robot_guide",null, null));
         packageMap.put(R.id.iv_pinggu, new MyPackage(R.id.iv_pinggu, "com.mmednet.autodiagnose", null,null));
+        packageMap.put(R.id.iv_shipin,new MyPackage(R.id.iv_shipin,"com.chinatel.robotclient",null,null));
         packageMap.put(R.id.iv_xueya,new MyPackage(R.id.iv_xueya,"com.unisrobot.jtjkzx2","com.unisrobot.jtjkzx2.BloodPressureActivity",null));
         packageMap.put(R.id.iv_tizhong,new MyPackage(R.id.iv_tizhong,"com.unisrobot.jtjkzx2","com.unisrobot.jtjkzx2.WeightActivity",null));
         packageMap.put(R.id.iv_tiwen,new MyPackage(R.id.iv_tiwen,"com.unisrobot.jtjkzx2","com.unisrobot.jtjkzx2.TiWenActivity",null));
