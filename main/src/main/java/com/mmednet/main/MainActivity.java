@@ -5,10 +5,10 @@ import android.animation.AnimatorListenerAdapter;
 import android.animation.ObjectAnimator;
 import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.text.TextUtils;
-import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -16,7 +16,10 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.mmednet.main.bean.Account;
+import com.mmednet.main.receiver.RecognizeReceiver;
 import com.mmednet.main.service.U05RobotService;
+import com.mmednet.main.socket.MsgSendUtils;
+import com.mmednet.main.socket.MsgType;
 import com.mmednet.main.socket.SocketManager;
 import com.mmednet.main.socket.U05RobotManger;
 import com.mmednet.main.util.CommonUtil;
@@ -85,6 +88,7 @@ public class MainActivity extends AppCompatActivity implements U05RobotManger.Wa
     private String t_shuiqian;
 
     private String userId;
+    private RecognizeReceiver recognizeReceiver;
 
 
     @Override
@@ -97,7 +101,22 @@ public class MainActivity extends AppCompatActivity implements U05RobotManger.Wa
         U05RobotManger.getInstance().registerWakeUpReceiver(getApplicationContext(), this);
         U05RobotManger.getInstance().registerBackToWakeUpReceiver(getApplicationContext(), this);
         startService(new Intent(this, U05RobotService.class));
+        recognizeReceiver = new RecognizeReceiver();
+
+        IntentFilter filter = new IntentFilter();
+        filter.addAction(Constant.RECOGNIZE);
+        registerReceiver(recognizeReceiver,filter);
     }
+
+    /*@OnClick(R.id.button)
+    public void send(View view){
+        MsgSendUtils.sendStringMsg(MsgType.SEND_MSG_SWITCH_STATE,"1");//1 取消聊天模式
+    }
+
+    @OnClick(R.id.button2)
+    public void sound(View view){
+        MsgSendUtils.sendStringMsg(MsgType.SEND_MSGTYPE_PLAY_TTS, "你好");
+    }*/
 
     @Override
     protected void onResume() {
@@ -129,9 +148,9 @@ public class MainActivity extends AppCompatActivity implements U05RobotManger.Wa
         }
     }
 
-    @OnClick({R.id.iv_daozhen, R.id.iv_pinggu, R.id.iv_xueya, R.id.iv_tizhong, R.id.iv_tiwen, R.id.iv_xuetang,R.id.iv_shipin})
+    @OnClick({R.id.iv_daozhen, R.id.iv_pinggu, R.id.iv_xueya, R.id.iv_tizhong, R.id.iv_tiwen, R.id.iv_xuetang, R.id.iv_shipin})
     void imageClick(View view) {
-
+        MsgSendUtils.sendStringMsg(MsgType.SEND_MSG_SWITCH_STATE, "1");//1 取消聊天模式
         if (CommonUtil.getLoginSte(this)) {
             PackageUtil.MyPackage myPackage=PackageUtil.getPackage(view.getId());
             if (myPackage != null && CommonUtil.existPackage(this, myPackage.getPackageName())) {
@@ -146,7 +165,6 @@ public class MainActivity extends AppCompatActivity implements U05RobotManger.Wa
                         PackageUtil.setArgs(view.getId(), args);
                         break;
                 }
-                Log.d(TAG, "myPackageInfo:" + myPackage);
                 CommonUtil.redirect(myPackage.getPackageName(), myPackage.getActivityName(), myPackage.getArgs(), this);
             } else {
                 ToastUtil.showMsg(this, R.string.not_exist_app);
@@ -175,7 +193,7 @@ public class MainActivity extends AppCompatActivity implements U05RobotManger.Wa
 
     @OnClick(R.id.ll_peiban)
     void btnPeibanClick(View view) {
-        ToastUtil.showMsg(this, "开启视频咨询");
+        MsgSendUtils.sendStringMsg(MsgType.SEND_MSG_SWITCH_STATE, "0");// 开启聊天模式
     }
 
     private void animate(ImageView image, final LinearLayout layout) {
@@ -217,6 +235,8 @@ public class MainActivity extends AppCompatActivity implements U05RobotManger.Wa
             bundle.putString("result", arg1);
             intent.putExtras(bundle);
             sendBroadcast(intent);
+        }else{
+            MsgSendUtils.sendStringMsg(MsgType.SEND_MSGTYPE_PLAY_TTS, "无法识别，请重复&&1");
         }
         Toast.makeText(getApplicationContext(), "收到识别结果 " + arg1, Toast.LENGTH_SHORT).show();
     }
@@ -227,5 +247,6 @@ public class MainActivity extends AppCompatActivity implements U05RobotManger.Wa
         U05RobotManger.getInstance().unRegisterBackToWakeUpReceiver(this);
         U05RobotManger.getInstance().unRegisterVoiceRecognitionResulReceiver(this);
         U05RobotManger.getInstance().unRegisterWakeUpReceiver(this);
+        unregisterReceiver(recognizeReceiver);
     }
 }

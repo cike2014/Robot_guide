@@ -16,4 +16,6 @@ public class Constant {
 
     public static final  String SOCKET_HOST = "192.168.12.1";
     public static final int SOCKET_PORT = 19255;
+
+    public static final String RECOGNIZE = "recognize";
 }

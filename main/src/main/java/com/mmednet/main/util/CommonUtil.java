@@ -5,12 +5,19 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.text.TextUtils;
 
 import com.mmednet.main.bean.Account;
 import com.mmednet.main.db.actual.AccountDao;
 
+import java.io.BufferedOutputStream;
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -91,6 +98,42 @@ public class CommonUtil {
             }
         }
         return apps;
+    }
+
+
+    public static Bitmap getBitmap(String fileName){
+        String path = Constant.ALBUM_PATH+fileName;
+        File file = new File(path);
+        if(file.exists()){
+            return BitmapFactory.decodeFile(path);
+        }else{
+            return null;
+        }
+
+    }
+
+    public static void saveBitmapToSD(Bitmap bitmap,String fileName){
+
+        String ALBUM_PATH = Constant.ALBUM_PATH;
+        File dirFile = new File(Constant.ALBUM_PATH);
+        if(!dirFile.exists()){
+            dirFile.mkdir();
+        }
+
+        File myCaptureFile = new File(ALBUM_PATH + fileName);
+        BufferedOutputStream bos =null;
+        try {
+            bos=new BufferedOutputStream(new FileOutputStream(myCaptureFile));
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        }
+        bitmap.compress(Bitmap.CompressFormat.JPEG, 80, bos);
+        try {
+            bos.flush();
+            bos.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
 }

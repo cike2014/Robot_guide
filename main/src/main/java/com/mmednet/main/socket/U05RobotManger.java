@@ -208,7 +208,11 @@ public class U05RobotManger {
 	}
 
 	public void unRegisterVoiceRecognitionResulReceiver(Context context) {
-		context.unregisterReceiver(mVoiceResultEventReceiver);
+		try{
+			context.unregisterReceiver(mVoiceResultEventReceiver);
+		}catch(Exception e){
+		}
+
 	}
 
 	/**

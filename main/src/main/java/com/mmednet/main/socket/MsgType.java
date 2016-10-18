@@ -273,4 +273,9 @@ public class MsgType {
      */
     public static final int RECEIVER_REGISTE_RESULT = 8433;
 
+
+    /**
+     * 更改状态 0  或者 1  。
+     */
+    public static final int SEND_MSG_SWITCH_STATE = 15;
 }
