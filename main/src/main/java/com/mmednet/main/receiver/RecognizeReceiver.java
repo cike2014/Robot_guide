@@ -13,7 +13,8 @@ import com.mmednet.main.socket.MsgType;
 public class RecognizeReceiver extends BroadcastReceiver {
     @Override
     public void onReceive(Context context, Intent intent) {
-        MsgSendUtils.sendStringMsg(MsgType.SEND_START_RECOGNIZER, "OK");
+        MsgSendUtils.sendStringMsg(MsgType.SEND_MSGTYPE_PLAY_TTS,"无法识别，请重复&&1");
+//        MsgSendUtils.sendStringMsg(MsgType.SEND_START_RECOGNIZER, "OK");
     }
 
 }

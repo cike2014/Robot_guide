@@ -3,6 +3,7 @@ package com.mmednet.main;
 import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
 import android.animation.ObjectAnimator;
+import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
@@ -10,13 +11,14 @@ import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.mmednet.main.bean.Account;
+import com.mmednet.main.db.actual.AccountDao;
 import com.mmednet.main.receiver.RecognizeReceiver;
 import com.mmednet.main.service.U05RobotService;
 import com.mmednet.main.socket.MsgSendUtils;
@@ -101,8 +103,8 @@ public class MainActivity extends AppCompatActivity implements U05RobotManger.Wa
     private static final String XUEYA_STR="血压,量血压,测血压";
     private static final String TIWEN_STR="体温,量体温,测体温";
     private static final String XUETANG_STR="血糖,量血糖,测血糖";
-    private static final String LIAOTIAN_STR="聊天";
-    private static final String STOP_LIAOTIAN="结束聊天,停止聊天";
+    private static final String LIAOTIAN_STR="聊天,聊聊天";
+    private BroadcastReceiver pingguReceiver;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -119,17 +121,9 @@ public class MainActivity extends AppCompatActivity implements U05RobotManger.Wa
         IntentFilter filter=new IntentFilter();
         filter.addAction(Constant.RECOGNIZE);
         registerReceiver(recognizeReceiver, filter);
-    }
 
-    /*@OnClick(R.id.button)
-    public void send(View view){
-        MsgSendUtils.sendStringMsg(MsgType.SEND_MSG_SWITCH_STATE,"1");//1 取消聊天模式
+        registerPingGuResult();
     }
-
-    @OnClick(R.id.button2)
-    public void sound(View view){
-        MsgSendUtils.sendStringMsg(MsgType.SEND_MSGTYPE_PLAY_TTS, "你好");
-    }*/
 
     @Override
     protected void onPause() {
@@ -172,6 +166,11 @@ public class MainActivity extends AppCompatActivity implements U05RobotManger.Wa
         }
     }
 
+    @OnClick(R.id.tv_time1)
+    void timeClick(View view){
+        SocketManager.getInstance().init(this);
+    }
+
     @OnClick({R.id.iv_daozhen, R.id.iv_pinggu, R.id.iv_xueya, R.id.iv_tizhong, R.id.iv_tiwen, R.id.iv_xuetang})
     void imageClick(View view) {
         redirect(view);
@@ -201,6 +200,40 @@ public class MainActivity extends AppCompatActivity implements U05RobotManger.Wa
             ToastUtil.showMsg(this, R.string.not_login);
         }
 
+    }
+
+
+    private void registerPingGuResult(){
+        IntentFilter filter = new IntentFilter();
+        filter.addAction("com.mmednet.autodiagnose.DISEASERESULT");
+        pingguReceiver = new BroadcastReceiver() {
+            @Override
+            public void onReceive(Context context, Intent intent) {
+                String userId =  intent.getStringExtra("userid");
+                String risk = intent.getStringExtra("risk");
+                String disease = intent.getStringExtra("disease");
+
+                Log.d(TAG,"userId:"+userId+";risk:"+risk+";diseases:"+disease);
+
+                if(!TextUtils.isEmpty(userId)){
+                    AccountDao dao = new AccountDao(MainActivity.this);
+                    Account account = dao.queryObject("id",userId);
+                    if(account!=null){
+                        if(!TextUtils.isEmpty(risk)){
+                            account.risk = risk;
+                        }
+                        if(!TextUtils.isEmpty(disease)){
+                            account.diseases = disease;
+                        }
+                        dao.update(account);
+                        mTvDiseases.setText(disease);
+                        mTvRisk.setText(risk);
+                    }
+                }
+            }
+        };
+
+        registerReceiver(pingguReceiver,filter);
     }
 
     @OnClick(R.id.ll_register)
@@ -245,13 +278,13 @@ public class MainActivity extends AppCompatActivity implements U05RobotManger.Wa
     @Override
     public void onHandleWakeUpEvent() {
         //机器人被唤醒了，可以开始语音识别.
-        Toast.makeText(getApplicationContext(), "onHandleWakeUpEvent", Toast.LENGTH_SHORT).show();
+//        Toast.makeText(getApplicationContext(), "onHandleWakeUpEvent", Toast.LENGTH_SHORT).show();
     }
 
     @Override
     public void onHandleEvent(Context context) {
         //结束语音识别，重新进入待唤醒状态。
-        Toast.makeText(getApplicationContext(), "registerBackToWakeUpReceiver", Toast.LENGTH_SHORT).show();
+//        Toast.makeText(getApplicationContext(), "registerBackToWakeUpReceiver", Toast.LENGTH_SHORT).show();
     }
 
     private boolean match(String[] arr, String result) {
@@ -295,12 +328,22 @@ public class MainActivity extends AppCompatActivity implements U05RobotManger.Wa
 
     private int FLAG_CURRENT=0;//默认当前应用失去焦点
 
+    private static int ERROR_NUM=0;
+
     @Override
     public void onHandleVoiceResulEvent(Context arg0, String arg1) {
-
-        Toast.makeText(getApplicationContext(), "收到识别结果 " + arg1, Toast.LENGTH_SHORT).show();
+//        Toast.makeText(getApplicationContext(), "收到识别结果 " + arg1, Toast.LENGTH_SHORT).show();
         //收到语音识别的结果.
+        if ("error".equals(arg1)) {
+            ERROR_NUM++;
+            if (ERROR_NUM > 5) {
+                MsgSendUtils.sendStringMsg(MsgType.SEND_STOP_RECOGNIZER, "OK");
+                return;
+            }
+        }
+
         if (!"error".equals(arg1)) {
+            ERROR_NUM=0;
             if (FLAG_CURRENT == 1) {
                 //首页按钮
                 View view=getViewByStr(arg1);
@@ -314,10 +357,16 @@ public class MainActivity extends AppCompatActivity implements U05RobotManger.Wa
                     MsgSendUtils.sendStringMsg(MsgType.SEND_MSG_SWITCH_STATE, "0");// 开启聊天模式
                     return;
                 }
-                MsgSendUtils.sendStringMsg(MsgType.SEND_MSGTYPE_PLAY_TTS, "无法识别，请重复&&1");
-                if ("结束,结束了,不说了,拜拜".indexOf(arg1)>-1){
-                    MsgSendUtils.sendStringMsg(MsgType.SEND_STOP_RECOGNIZER,"OK");
+               /* String[] stopLiaoTian=STOP_LIAOTIAN.split(",");
+                if (stopLiaoTian[0].equals(arg1) || stopLiaoTian[1].equals(arg1)) {
+                    MsgSendUtils.sendStringMsg(MsgType.SEND_MSG_SWITCH_STATE, "1");// 开启我们模式
+                    return;
+                }*/
+                if ("结束,结束了,不说了,拜拜".indexOf(arg1) > -1) {
+                    MsgSendUtils.sendStringMsg(MsgType.SEND_STOP_RECOGNIZER, "OK");
+                    return;
                 }
+                MsgSendUtils.sendStringMsg(MsgType.SEND_MSGTYPE_PLAY_TTS, "无法识别，请重复&&1");
             } else {
                 //发送广播到其他应用
                 Intent intent=new Intent(Constant.OTHER_FLAG);
@@ -339,6 +388,7 @@ public class MainActivity extends AppCompatActivity implements U05RobotManger.Wa
         U05RobotManger.getInstance().unRegisterVoiceRecognitionResulReceiver(this);
         U05RobotManger.getInstance().unRegisterWakeUpReceiver(this);
         unregisterReceiver(recognizeReceiver);
+        unregisterReceiver(pingguReceiver);
     }
 
 }
