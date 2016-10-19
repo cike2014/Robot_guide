@@ -13,7 +13,6 @@ import android.widget.RadioGroup;
 
 import com.mmednet.main.bean.Account;
 import com.mmednet.main.db.actual.AccountDao;
-import com.mmednet.main.socket.U05RobotManger;
 import com.mmednet.main.util.CommonUtil;
 import com.mmednet.main.util.Constant;
 import com.mmednet.main.util.PicturesUtils;
@@ -89,7 +88,8 @@ public class RegisterActivity extends AppCompatActivity {
         AccountDao ad=new AccountDao(this);
         ad.insert(account);
         SettingUtils.setEditor(this, Constant.USER_ID,account.id);
-        ToastUtil.showMsg(this, "name:" + ad.queryObject("name", account.name));
+        Account account1 = ad.queryObject("name", account.name);
+        CommonUtil.saveBitmapToSD(ivHeadBitmap,account1.id+".png");
         Intent intent = new Intent(this,MainActivity.class);
         intent.setFlags(Intent.FLAG_ACTIVITY_BROUGHT_TO_FRONT);
         startActivity(intent);
@@ -142,8 +142,8 @@ public class RegisterActivity extends AppCompatActivity {
         ivHeadBitmap=picturesUtils.handlePictureData(resultCode, requestCode, data);
         if (ivHeadBitmap != null){
             mIvHead.setImageBitmap(ivHeadBitmap);
-            U05RobotManger.registerFaceRecongnize(ivHeadBitmap,"andy","12341234");
-            CommonUtil.saveBitmapToSD(ivHeadBitmap,"12341234.png");
+//            U05RobotManger.registerFaceRecongnize(ivHeadBitmap,"andy","12341234");
+
         }
     }
 

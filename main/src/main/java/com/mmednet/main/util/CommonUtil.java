@@ -36,7 +36,7 @@ public class CommonUtil {
     /**
      * 判断当前应用是否显示在最前面
      * @param context
-     * @return
+     * @return true:后台;false：前台
      */
     public static boolean isBackground(Context context) {
         ActivityManager activityManager = (ActivityManager) context.getSystemService(Context.ACTIVITY_SERVICE);
@@ -44,10 +44,10 @@ public class CommonUtil {
         for (ActivityManager.RunningAppProcessInfo appProcess : appProcesses) {
             if (appProcess.processName.equals(context.getPackageName())) {
                 if (appProcess.importance == ActivityManager.RunningAppProcessInfo.IMPORTANCE_BACKGROUND) {
-                    Log.i("后台", appProcess.processName);
+                    Log.i(TAG, appProcess.processName+"后台");
                     return true;
                 }else{
-                    Log.i("前台", appProcess.processName);
+                    Log.i(TAG, appProcess.processName+"前台");
                     return false;
                 }
             }

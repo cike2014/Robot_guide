@@ -14,16 +14,22 @@
         android:screenOrientation="portrait"
         android:supportsRtl="true"
         android:theme="@style/Theme.AppCompat.Light.NoActionBar">
-        <activity android:name=".IndexActivity">
+        <activity
+            android:name=".IndexActivity"
+            android:screenOrientation="landscape">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN"/>
 
                 <category android:name="android.intent.category.LAUNCHER"/>
             </intent-filter>
         </activity>
-        <activity android:name=".MainActivity">
+        <activity
+            android:name=".MainActivity"
+            android:screenOrientation="landscape">
         </activity>
-        <activity android:name=".ResultActivity">
+        <activity
+            android:name=".ResultActivity"
+            android:screenOrientation="landscape">
         </activity>
 
         <receiver
