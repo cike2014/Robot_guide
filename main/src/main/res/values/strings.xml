@@ -21,7 +21,7 @@
     <string name="t1">糖尿病</string>
     <string name="label_risk">疾病风险：</string>
     <string name="t2">高血压、冠心病</string>
-    <string name="label_service">陪伴服务</string>
+    <string name="label_service">聊天</string>
     <string name="label_register">注册</string>
 
     <string name="not_exist_app">该应用还没有安装</string>

@@ -3,12 +3,16 @@ package com.mmednet.main;
 import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
 import android.animation.ObjectAnimator;
+import android.app.ActivityManager;
+import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -74,6 +78,8 @@ public class MainActivity extends AppCompatActivity implements U05RobotManger.Wa
     TextView mTvDiseases;
     @Bind(R.id.tv_risk)
     TextView mTvRisk;
+    @Bind(R.id.iv_head)
+    ImageView mIvHead;
 
 
     private String t_tizhong;
@@ -90,6 +96,16 @@ public class MainActivity extends AppCompatActivity implements U05RobotManger.Wa
     private String userId;
     private RecognizeReceiver recognizeReceiver;
 
+
+    private static final String DAOZHEN_STR = "智能导诊,导诊,只能,智能";
+    private static final String PINGGU_STR = "健康评估,健康,评估";
+    private static final String YAOXIANG_STR = "智能药箱,药箱,要想,遥想";
+    private static final String TIZHONG_STR = "体重,量体重";
+    private static final String XUEYA_STR = "血压,量血压,测血压";
+    private static final String TIWEN_STR = "体温,量体温,测体温";
+    private static final String XUETANG_STR = "血糖,量血糖,测血糖";
+    private static final String LIAOTIAN_STR = "聊天";
+    private static final String STOP_LIAOTIAN = "结束聊天,停止聊天";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -135,6 +151,10 @@ public class MainActivity extends AppCompatActivity implements U05RobotManger.Wa
             mTvAge.setText(TimeUtil.getAge(account.birth) + "");
             mTvDiseases.setText(account.diseases);
             mTvRisk.setText(account.risk);
+            Bitmap headBm = CommonUtil.getBitmap(account.id+".png");
+            if(headBm!=null){
+                mIvHead.setImageBitmap(headBm);
+            }
         } else {
             mLlInfo1.setVisibility(View.INVISIBLE);
             mLlInfo2.setVisibility(View.INVISIBLE);
@@ -148,8 +168,12 @@ public class MainActivity extends AppCompatActivity implements U05RobotManger.Wa
         }
     }
 
-    @OnClick({R.id.iv_daozhen, R.id.iv_pinggu, R.id.iv_xueya, R.id.iv_tizhong, R.id.iv_tiwen, R.id.iv_xuetang, R.id.iv_shipin})
+    @OnClick({R.id.iv_daozhen, R.id.iv_pinggu, R.id.iv_xueya, R.id.iv_tizhong, R.id.iv_tiwen, R.id.iv_xuetang})
     void imageClick(View view) {
+        redirect(view);
+    }
+
+    private void redirect(View view){
         MsgSendUtils.sendStringMsg(MsgType.SEND_MSG_SWITCH_STATE, "1");//1 取消聊天模式
         if (CommonUtil.getLoginSte(this)) {
             PackageUtil.MyPackage myPackage=PackageUtil.getPackage(view.getId());
@@ -226,10 +250,72 @@ public class MainActivity extends AppCompatActivity implements U05RobotManger.Wa
         Toast.makeText(getApplicationContext(), "registerBackToWakeUpReceiver", Toast.LENGTH_SHORT).show();
     }
 
+    private boolean match(String[] arr,String result){
+        for (String str:arr){
+            if(result.indexOf(str)>-1){
+                return true;
+            }
+        }
+        return false;
+    }
+
+    private View getViewByStr(String result){
+        View view = null;
+        String[] daozhen = DAOZHEN_STR.split(",");
+        String[] pinggu = PINGGU_STR.split(",");
+        String[] yaoxiang = YAOXIANG_STR.split(",");
+        String[] tizhong = TIZHONG_STR.split(",");
+        String[] xueya = XUEYA_STR.split(",");
+        String[] tiwen = TIWEN_STR.split(",");
+        String[] xuetang = XUETANG_STR.split(",");
+
+        if(match(daozhen,result)){
+            view = findViewById(R.id.iv_daozhen);
+        }else if(match(pinggu,result)){
+            view = findViewById(R.id.iv_pinggu);
+        }else if(match(yaoxiang,result)){
+            view = findViewById(R.id.iv_yaoxiang);
+        }else if(match(tizhong,result)){
+            view = findViewById(R.id.iv_tizhong);
+        }else if(match(xueya,result)){
+            view = findViewById(R.id.iv_xueya);
+        }else if(match(tiwen,result)){
+            view = findViewById(R.id.iv_tiwen);
+        }else if(match(xuetang,result)){
+            view = findViewById(R.id.iv_xuetang);
+        }else{
+            view = null;
+        }
+        return view;
+    }
+
     @Override
     public void onHandleVoiceResulEvent(Context arg0, String arg1) {
         //收到语音识别的结果.
         if (!"error".equals(arg1)) {
+
+            if (isTopActivity("com.mmednet.main.MainActivity")){
+                //首页按钮
+                View view = getViewByStr(arg1);
+                if(view!=null){
+                    redirect(view);
+                    return;
+                }
+
+                //首页聊天
+                String[] liaotian = LIAOTIAN_STR.split(",");
+                if(match(liaotian,arg1)){
+                    MsgSendUtils.sendStringMsg(MsgType.SEND_MSG_SWITCH_STATE, "0");// 开启聊天模式
+                    return;
+                }
+
+                MsgSendUtils.sendStringMsg(MsgType.SEND_MSGTYPE_PLAY_TTS, "无法识别，请重复&&1");
+
+                return;
+            }
+
+
+            //发送广播到其他应用
             Intent intent=new Intent(Constant.OTHER_FLAG);
             Bundle bundle=new Bundle();
             bundle.putString("result", arg1);
@@ -248,5 +334,20 @@ public class MainActivity extends AppCompatActivity implements U05RobotManger.Wa
         U05RobotManger.getInstance().unRegisterVoiceRecognitionResulReceiver(this);
         U05RobotManger.getInstance().unRegisterWakeUpReceiver(this);
         unregisterReceiver(recognizeReceiver);
+    }
+
+    private boolean isTopActivity(String tag){
+        long begin = System.currentTimeMillis();
+        Log.d(TAG,"begin:"+System.currentTimeMillis());
+        boolean isTop = false;
+        ActivityManager am = (ActivityManager)getSystemService(ACTIVITY_SERVICE);
+        ComponentName cn = am.getRunningTasks(1).get(0).topActivity;
+
+        Log.d(TAG, "cn.getClassName():"+cn.getClassName());
+        if (cn.getClassName().contains(tag)){
+            isTop = true;
+        }
+        Log.d(TAG,"end:"+System.currentTimeMillis());
+        return isTop;
     }
 }
