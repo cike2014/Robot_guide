@@ -13,6 +13,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
+import android.view.WindowManager;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -110,6 +111,7 @@ public class MainActivity extends AppCompatActivity implements U05RobotManger.Wa
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        this.getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
         ButterKnife.bind(this);
         SocketManager.getInstance().init(this);
         U05RobotManger.getInstance().registerVoiceResultReceiver(getApplicationContext(), this);
@@ -221,9 +223,13 @@ public class MainActivity extends AppCompatActivity implements U05RobotManger.Wa
                     if(account!=null){
                         if(!TextUtils.isEmpty(risk)){
                             account.risk = risk;
+                        }else{
+                            account.risk = "无";
                         }
                         if(!TextUtils.isEmpty(disease)){
                             account.diseases = disease;
+                        }else{
+                            account.diseases = "无";
                         }
                         dao.update(account);
                         mTvDiseases.setText(disease);
