@@ -23,16 +23,16 @@ public class IntelligenceGuideSymptom {
 	private static final String TAG = IntelligenceGuideSymptom.class.getSimpleName();
 	
 	/** 身体症状关键字 **/
-	private static final String BODY_WORDS = "全身、浑身、皮肤、淋巴、没劲、疼、痛、烧、体温、汗、冷、吃、梦、睡、胃口、晕、迷糊、昏倒、虚、醒、食欲、饿、厌食、饱、抽、痒、黄";
+	private static final String BODY_WORDS = "全身、浑身、皮肤、淋巴、没劲、烧、体温、汗、冷、吃、梦、睡、胃口、晕、迷糊、昏倒、虚、醒、食欲、饿、厌食、饱、抽、痒、黄、疼";
 	
 	/** 头颈部症状关键字 **/
-	private static final String HEAD_WORDS = "头、脑、额、脖子、颈、眼、鼻、耳、嗓子、咽、喉、牙、嘴、口、舌、脸、面、腮、扁桃体、肿、咳、咯、痰、晕、血、疼、痒、痛、紫、青、迷糊、转、昏";
+	private static final String HEAD_WORDS = "头、脑、额、脖子、颈、眼、鼻、耳、嗓子、咽、喉、牙、嘴、口、舌、脸、面、腮、扁桃体、肿、咳、咯、痰、晕、血、痒、紫、青、迷糊、转、昏";
 	
 	/** 胸部症状关键字 **/
-	private static final String CHEST_WORDS = "胸、肋骨、后背、乳房、乳腺、肺、心、腔、气管、憋、闷、慌、跳、岔气、疼、痛、块";
+	private static final String CHEST_WORDS = "胸、肋骨、后背、乳房、乳腺、肺、心、腔、气管、憋、闷、慌、跳、岔气、块";
 	
 	/** 腹部症状关键字 **/
-	private static final String ABDOMEN_WORDS = "腹、胆、脾、腰、膀胱、阴道、输尿管、肚、脐、心口、肠、肝、阑尾、胃、肾、卵巢、子宫、输卵管、胰、恶心、呕吐、疼、尿、块、胀、泻、嗝、痛、顶、扎";
+	private static final String ABDOMEN_WORDS = "腹、胆、脾、腰、膀胱、阴道、输尿管、肚、脐、心口、肠、肝、阑尾、胃、肾、卵巢、子宫、输卵管、胰、恶心、呕吐、尿、块、胀、泻、嗝、顶、扎";
 	
 	/** 肢体症状关键字 **/
 	private static final String LIMB_WORDS = "手、脚、腿、腰、臂、膝、髋、腕、指、趾、掌、肘、肩、腋、关节、抽、青、紫"; 

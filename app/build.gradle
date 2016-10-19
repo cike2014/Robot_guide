@@ -32,5 +32,4 @@ dependencies {
     compile 'com.j256.ormlite:ormlite-android:5.0'
     compile files('libs/commons-collections-3.2.1.jar')
     compile files('libs/u05_sdk.jar')
-    compile project(path: ':main')
 }
