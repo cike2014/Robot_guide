@@ -60,22 +60,28 @@ public class MainActivity extends AppCompatActivity implements RobotService.ISer
     }
 
     private void showNextQuestion() {
-        Question q=DataCenter.getInstance().getQuestion(NO);
-        if (q == null) {
-            ToastUtil.showMsg(this, "回答完成");
-            mBtnYes.setEnabled(false);
-            mBtnNo.setEnabled(false);
-            new Handler().postDelayed(new Runnable() {
-                @Override
-                public void run() {
-                    submitData();
-                }
-            }, 1000);
-            return;
+        try{
+            Question q=DataCenter.getInstance().getQuestion(NO);
+            if (q == null) {
+                ToastUtil.showMsg(this, "回答完成");
+                mBtnYes.setEnabled(false);
+                mBtnNo.setEnabled(false);
+                new Handler().postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        submitData();
+                    }
+                }, 1000);
+                return;
+            }
+            mTvTitle.setText(q.title);
+            CommonUtils.playTTS(this, q.title.substring(0, q.title.length() - 1) + "&&1");
+            this.curQuestion=q;
+        }catch(Exception e){
+            submitData();
         }
-        mTvTitle.setText(q.title);
-        CommonUtils.playTTS(this, q.title.substring(0, q.title.length() - 1) + "&&1");
-        this.curQuestion=q;
+
+
     }
 
     @OnClick(R.id.btn_no)
@@ -137,6 +143,7 @@ public class MainActivity extends AppCompatActivity implements RobotService.ISer
         @Override
         public void onReceive(Context context, Intent intent) {
             String result=intent.getStringExtra("result");
+            Log.d(TAG,"识别结果:"+result);
             if (Arrays.asList(curQuestion.positive.split(";")).contains(result)) {
                 ack();
                 return;
@@ -145,13 +152,22 @@ public class MainActivity extends AppCompatActivity implements RobotService.ISer
                 nck();
                 return;
             }
-            if (Arrays.asList(finish.split(";")).contains(result)) {
+            if(match(result,finish.split(";"))){
                 submitData();
                 return;
             }
             CommonUtils.playTTS(context, "无法识别，请重复&&1");
         }
     };
+
+    private boolean match(String result,String[] arr){
+        for (String s:arr){
+            if(result.indexOf(s)>-1){
+                return true;
+            }
+        }
+        return false;
+    }
 
 
     @Override
