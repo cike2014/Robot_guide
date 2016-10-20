@@ -1,6 +1,7 @@
 package com.mmednet.robotGuide;
 
 import android.app.Dialog;
+import android.content.ComponentName;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
@@ -27,7 +28,7 @@ import butterknife.OnClick;
 public class ResultActivity extends AppCompatActivity  {
 
     @Bind(R.id.ll1)
-    LinearLayout mLl1;
+    RelativeLayout mLl1;
     @Bind(R.id.ll2)
     LinearLayout mLl2;
     @Bind(R.id.result_iv_1)
@@ -72,9 +73,8 @@ public class ResultActivity extends AppCompatActivity  {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_result);
-        this.getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
         ButterKnife.bind(this);
-
+        this.getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
         ArrayList<IntelligentGuideDepartment> departments=(ArrayList<IntelligentGuideDepartment>) getIntent().getSerializableExtra("departments");
 
         if(departments!=null && departments.size()==3){
@@ -110,6 +110,15 @@ public class ResultActivity extends AppCompatActivity  {
     @OnClick({R.id.rl_doctor1, R.id.rl_doctor2, R.id.rl_doctor3})
     void videoClick(View view) {
         showDialog();
+    }
+
+    @OnClick(R.id.bt_return)
+    void btnReturnClick(View view){
+        finish();
+        Intent intent = new Intent();
+        intent.setComponent(new ComponentName("com.mmednet.main","com.mmednet.main.MainActivity"));
+        intent.setAction(Intent.ACTION_VIEW);
+        startActivity(intent);
     }
 
 

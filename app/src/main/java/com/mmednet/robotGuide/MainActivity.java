@@ -149,7 +149,7 @@ public class MainActivity extends AppCompatActivity implements RobotService.ISer
                 submitData();
                 return;
             }
-            CommonUtils.playTTS(context, "对不起，听不懂您在说什么");
+            CommonUtils.playTTS(context, "无法识别，请重复&&1");
         }
     };
 
