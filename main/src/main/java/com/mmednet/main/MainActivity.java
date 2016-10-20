@@ -17,6 +17,7 @@ import android.view.WindowManager;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.mmednet.main.bean.Account;
 import com.mmednet.main.db.actual.AccountDao;
@@ -338,7 +339,7 @@ public class MainActivity extends AppCompatActivity implements U05RobotManger.Wa
 
     @Override
     public void onHandleVoiceResulEvent(Context arg0, String arg1) {
-//        Toast.makeText(getApplicationContext(), "收到识别结果 " + arg1, Toast.LENGTH_SHORT).show();
+        Toast.makeText(getApplicationContext(), "收到识别结果 " + arg1, Toast.LENGTH_SHORT).show();
         //收到语音识别的结果.
         if ("error".equals(arg1)) {
             ERROR_NUM++;
