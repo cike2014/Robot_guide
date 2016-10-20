@@ -340,6 +340,7 @@ public class MainActivity extends AppCompatActivity implements U05RobotManger.Wa
     @Override
     public void onHandleVoiceResulEvent(Context arg0, String arg1) {
         Toast.makeText(getApplicationContext(), "收到识别结果 " + arg1, Toast.LENGTH_SHORT).show();
+        Log.e(TAG,"結果："+arg1);
         //收到语音识别的结果.
         if ("error".equals(arg1)) {
             ERROR_NUM++;
@@ -369,10 +370,17 @@ public class MainActivity extends AppCompatActivity implements U05RobotManger.Wa
                     MsgSendUtils.sendStringMsg(MsgType.SEND_MSG_SWITCH_STATE, "1");// 开启我们模式
                     return;
                 }*/
-                if ("结束,结束了,不说了,拜拜".indexOf(arg1) > -1) {
-                    MsgSendUtils.sendStringMsg(MsgType.SEND_STOP_RECOGNIZER, "OK");
-                    return;
+                String[] finishKeywords = "结束,结束了,不说了,拜拜".split(",");
+                boolean allMatch = false;
+                for(String key:finishKeywords){
+                    if(key.equals(arg1)){
+                        allMatch = true;
+                        MsgSendUtils.sendStringMsg(MsgType.SEND_STOP_RECOGNIZER, "OK");
+                    }
                 }
+                if(allMatch)return;
+
+
                 MsgSendUtils.sendStringMsg(MsgType.SEND_MSGTYPE_PLAY_TTS, "无法识别，请重复&&1");
             } else {
                 //发送广播到其他应用
