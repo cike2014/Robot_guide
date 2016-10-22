@@ -5,6 +5,7 @@ import android.content.ComponentName;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
@@ -97,7 +98,13 @@ public class ResultActivity extends AppCompatActivity  {
         }else{
             mLl1.setVisibility(View.GONE);
             mLl2.setVisibility(View.GONE);
-            CommonUtils.playTTS(this,"您回答的问题太少，无法计算您所需的科室。");
+            CommonUtils.playTTS(this,"您很健康，无需去医院");
+            new Handler().postDelayed(new Runnable() {
+                @Override
+                public void run() {
+                    ResultActivity.this.finish();
+                }
+            },1000);
         }
 
     }

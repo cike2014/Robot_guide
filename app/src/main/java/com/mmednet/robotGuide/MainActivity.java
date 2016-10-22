@@ -5,7 +5,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.os.Bundle;
-import android.os.Handler;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
@@ -60,24 +59,19 @@ public class MainActivity extends AppCompatActivity implements RobotService.ISer
     }
 
     private void showNextQuestion() {
-        try{
+        try {
             Question q=DataCenter.getInstance().getQuestion(NO);
             if (q == null) {
                 ToastUtil.showMsg(this, "回答完成");
                 mBtnYes.setEnabled(false);
                 mBtnNo.setEnabled(false);
-                new Handler().postDelayed(new Runnable() {
-                    @Override
-                    public void run() {
-                        submitData();
-                    }
-                }, 1000);
+                submitData();
                 return;
             }
             mTvTitle.setText(q.title);
             CommonUtils.playTTS(this, q.title.substring(0, q.title.length() - 1) + "&&1");
             this.curQuestion=q;
-        }catch(Exception e){
+        } catch (Exception e) {
             submitData();
         }
 
@@ -143,7 +137,7 @@ public class MainActivity extends AppCompatActivity implements RobotService.ISer
         @Override
         public void onReceive(Context context, Intent intent) {
             String result=intent.getStringExtra("result");
-            Log.d(TAG,"识别结果:"+result);
+            Log.d(TAG, "识别结果:" + result);
             if (Arrays.asList(curQuestion.positive.split(";")).contains(result)) {
                 ack();
                 return;
@@ -152,7 +146,7 @@ public class MainActivity extends AppCompatActivity implements RobotService.ISer
                 nck();
                 return;
             }
-            if(match(result,finish.split(";"))){
+            if (match(result, finish.split(";"))) {
                 submitData();
                 return;
             }
@@ -160,9 +154,9 @@ public class MainActivity extends AppCompatActivity implements RobotService.ISer
         }
     };
 
-    private boolean match(String result,String[] arr){
-        for (String s:arr){
-            if(result.indexOf(s)>-1){
+    private boolean match(String result, String[] arr) {
+        for (String s : arr) {
+            if (result.indexOf(s) > -1) {
                 return true;
             }
         }
