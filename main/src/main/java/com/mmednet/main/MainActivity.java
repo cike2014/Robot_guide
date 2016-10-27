@@ -38,6 +38,9 @@ import butterknife.Bind;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
+/**
+ * zzz
+ */
 public class MainActivity extends AppCompatActivity implements U05RobotManger.WakeUpReceiver, U05RobotManger.BackToWakeUpReceiver, U05RobotManger.VoiceRecognitionResultReceiver {
 
     private static final String TAG=MainActivity.class.getSimpleName();
