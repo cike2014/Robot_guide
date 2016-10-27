@@ -20,6 +20,8 @@ public class BaseActivity extends AppCompatActivity {
             progressDialog.setTitle(getResources().getString(resourceTitle));
             progressDialog.setMessage(getResources().getString(resourceMsg));
             progressDialog.show();
+        }else{
+
         }
     }
 
